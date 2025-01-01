@@ -2,6 +2,7 @@ import SwiftUI
 import CoreMotion
 import AVFoundation
 
+// MARK: - Main View
 struct ContentView: View {
     @StateObject private var motionVM = MotionViewModel()
     
@@ -21,13 +22,17 @@ struct ContentView: View {
             
             // MARK: - AirPods
             VStack(spacing: 5) {
-                if motionVM.isAirpodsMotionActive {
-                    Text("AirPods Pitch: \(motionVM.airpodsPitch, specifier: "%.2f")°")
-                    Text("AirPods Roll:  \(motionVM.airpodsRoll, specifier: "%.2f")°")
-                    Text("AirPods Yaw:   \(motionVM.airpodsYaw, specifier: "%.2f")°")
+                if motionVM.isAirpodsMotionActive,
+                   let pitch = motionVM.airpodsPitch,
+                   let roll = motionVM.airpodsRoll,
+                   let yaw = motionVM.airpodsYaw {
+                    Text("AirPods Pitch: \(pitch, specifier: "%.2f")°")
+                    Text("AirPods Roll:  \(roll, specifier: "%.2f")°")
+                    Text("AirPods Yaw:   \(yaw, specifier: "%.2f")°")
                 } else {
-                    Text("Airpods motion not detected")
+                    Text("AirPods motion not detected")
                         .foregroundColor(.red)
+                        .font(.system(size: 16, weight: .medium, design: .monospaced))
                 }
             }
             .font(.system(size: 16, weight: .medium, design: .monospaced))
@@ -54,9 +59,7 @@ struct ContentView: View {
                 .font(.headline)
                 .foregroundColor(.white)
                 .background(Color.blue.cornerRadius(8))
-                // Disable if no AirPods motion
                 .disabled(!motionVM.isAirpodsMotionActive)
-                
             } else {
                 Button(motionVM.buttonTitle) {
                     motionVM.handleCalibrationButtonPress()
@@ -65,7 +68,6 @@ struct ContentView: View {
                 .font(.headline)
                 .foregroundColor(.white)
                 .background(Color.blue.cornerRadius(8))
-                // Disable if no AirPods motion
                 .disabled(!motionVM.isAirpodsMotionActive)
             }
             
@@ -96,13 +98,26 @@ class MotionViewModel: ObservableObject {
     @Published var phoneYaw:   Double = 0.0
     
     // MARK: - Published: Current AirPods Orientation
-    @Published var airpodsPitch: Double = 0.0
-    @Published var airpodsRoll:  Double = 0.0
-    @Published var airpodsYaw:   Double = 0.0
+    @Published var airpodsPitch: Double? = nil {
+        didSet {
+            updatePercentDownAndCheckBeep()
+        }
+    }
+    @Published var airpodsRoll:  Double? = nil
+    @Published var airpodsYaw:   Double? = nil
     
     // MARK: - Whether AirPods motion is active
-    @Published var isAirpodsMotionActive: Bool = false
+    @Published var isAirpodsMotionActive: Bool = false {
+        didSet {
+            if !isAirpodsMotionActive {
+                clearAirpodsData()
+            }
+        }
+    }
     
+    private var lastUpdated: Date = Date()
+    private let updateThreshold: TimeInterval = 2.0
+
     // MARK: - Calibration
     private enum CalibrationStage {
         case notStarted
@@ -110,24 +125,20 @@ class MotionViewModel: ObservableObject {
         case captureDown
         case done
     }
-    
     private var stage: CalibrationStage = .notStarted
     
-    // Store captured pitches for neutral & head-down
     private var neutralPitch: Double?
     private var headDownPitch: Double?
     
-    // Expose a textual description of the current calibration stage
     var calibrationStageText: String {
         switch stage {
-        case .notStarted:      return "Not Started"
-        case .captureNeutral:  return "Capture Neutral Head"
-        case .captureDown:     return "Capture Head Down"
-        case .done:            return "Calibrated"
+        case .notStarted:     return "Not Started"
+        case .captureNeutral: return "Capture Neutral Head"
+        case .captureDown:    return "Capture Head Down"
+        case .done:           return "Calibrated"
         }
     }
     
-    // Expose a dynamic button title based on current stage
     var buttonTitle: String {
         switch stage {
         case .notStarted:     return "Calibrate"
@@ -137,21 +148,22 @@ class MotionViewModel: ObservableObject {
         }
     }
     
-    // True when calibration is completed
     var isCalibrated: Bool {
         return stage == .done
     }
     
-    // MARK: - Computed "Percent Down"
-    @Published var percentDown: Double = 0.0  // 0.0 => same as neutral; 1.0 => same as "down"
+    @Published var percentDown: Double = 0.0
     
     // MARK: - Timer for continuous beeping
     private var beepTimer: Timer?
-    private let beepInterval = 0.75 // seconds between beeps
+    private let beepInterval = 0.75
+    
+    // MARK: - Timer to poll headphone connection
+    private var connectionStatusTimer: Timer?
     
     // MARK: - Init
     init() {
-        // Preload beep sound. Make sure "look_up.wav" is in your bundle
+        // Preload beep sound
         if let url = Bundle.main.url(forResource: "look_up", withExtension: "wav") {
             do {
                 audioPlayer = try AVAudioPlayer(contentsOf: url)
@@ -166,43 +178,36 @@ class MotionViewModel: ObservableObject {
     func startUpdates() {
         startPhoneMotionUpdates()
         startAirPodsMotionUpdates()
+        
+        // Poll connection status every 1 second
+        connectionStatusTimer?.invalidate()
+        connectionStatusTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+
+            let currentTime = Date()
+            let timeSinceLastUpdate = currentTime.timeIntervalSince(self.lastUpdated)
+
+            let isConnectedAndUpdating = self.headphoneMotionManager.isDeviceMotionAvailable
+                && self.headphoneMotionManager.isDeviceMotionActive
+                && timeSinceLastUpdate < self.updateThreshold
+
+            DispatchQueue.main.async {
+                self.isAirpodsMotionActive = isConnectedAndUpdating
+                if !isConnectedAndUpdating {
+                    self.clearAirpodsData()
+                }
+            }
+        }
     }
     
     func stopUpdates() {
         phoneMotionManager.stopDeviceMotionUpdates()
         headphoneMotionManager.stopDeviceMotionUpdates()
         stopBeeping()
+        connectionStatusTimer?.invalidate()
+        connectionStatusTimer = nil
     }
-    
-    // MARK: - Handle Calibration Button
-    func handleCalibrationButtonPress() {
-        switch stage {
-        case .notStarted:
-            stage = .captureNeutral
-            
-        case .captureNeutral:
-            neutralPitch = airpodsPitch
-            stage = .captureDown
-            
-        case .captureDown:
-            headDownPitch = airpodsPitch
-            stage = .done
-            
-        case .done:
-            // Already calibrated, do nothing
-            break
-        }
-    }
-    
-    // MARK: - Recalibrate
-    func recalibrate() {
-        stage = .notStarted
-        neutralPitch = nil
-        headDownPitch = nil
-        percentDown = 0.0
-        stopBeeping()
-    }
-    
+
     // MARK: - Start iPhone Motion
     private func startPhoneMotionUpdates() {
         guard phoneMotionManager.isDeviceMotionAvailable else {
@@ -223,49 +228,78 @@ class MotionViewModel: ObservableObject {
             self.phoneYaw   = yawDegrees
         }
     }
-    
+
     // MARK: - Start AirPods Motion
     private func startAirPodsMotionUpdates() {
         guard headphoneMotionManager.isDeviceMotionAvailable else {
-            // If deviceMotion is not available at all, we never get motion
-            isAirpodsMotionActive = false
+            DispatchQueue.main.async {
+                self.isAirpodsMotionActive = false
+                self.clearAirpodsData()
+            }
             print("AirPods motion data not available or unsupported model.")
             return
         }
         
-        // Continuously receive updates
         headphoneMotionManager.startDeviceMotionUpdates(to: .main) { [weak self] motion, error in
             guard let self = self else { return }
             
-            // If error or motion is nil, set isAirpodsMotionActive = false
-            if let err = error {
-                print("AirPods motion error: \(err.localizedDescription)")
-                self.isAirpodsMotionActive = false
+            if let error = error {
+                print("AirPods motion error: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self.isAirpodsMotionActive = false
+                    self.clearAirpodsData()
+                }
                 return
             }
+            
             guard let motion = motion else {
-                // We got a callback but no motion data
-                self.isAirpodsMotionActive = false
+                DispatchQueue.main.async {
+                    self.isAirpodsMotionActive = false
+                    self.clearAirpodsData()
+                }
                 return
             }
             
-            // Valid motion: mark active
-            self.isAirpodsMotionActive = true
-            
-            // Update pitch/roll/yaw
-            let pitchDegrees = motion.attitude.pitch * (180.0 / .pi)
-            let rollDegrees  = motion.attitude.roll  * (180.0 / .pi)
-            let yawDegrees   = motion.attitude.yaw   * (180.0 / .pi)
-            
-            self.airpodsPitch = pitchDegrees
-            self.airpodsRoll  = rollDegrees
-            self.airpodsYaw   = yawDegrees
-            
-            // If calibrated, track how “down” the head is
-            if self.stage == .done {
-                self.updatePercentDownAndCheckBeep()
+            DispatchQueue.main.async {
+                self.isAirpodsMotionActive = true
+                self.airpodsPitch = motion.attitude.pitch * (180.0 / .pi)
+                self.airpodsRoll = motion.attitude.roll * (180.0 / .pi)
+                self.airpodsYaw = motion.attitude.yaw * (180.0 / .pi)
+                self.lastUpdated = Date()
             }
         }
+    }
+
+    // MARK: - Handle Calibration Button Press
+    func handleCalibrationButtonPress() {
+        switch stage {
+        case .notStarted:
+            stage = .captureNeutral
+        case .captureNeutral:
+            neutralPitch = airpodsPitch
+            stage = .captureDown
+        case .captureDown:
+            headDownPitch = airpodsPitch
+            stage = .done
+        case .done:
+            break // Already calibrated
+        }
+    }
+
+    // MARK: - Recalibrate
+    func recalibrate() {
+        stage = .notStarted
+        neutralPitch = nil
+        headDownPitch = nil
+        percentDown = 0.0
+        stopBeeping()
+    }
+
+    // MARK: - Clear AirPods Data
+    private func clearAirpodsData() {
+        airpodsPitch = nil
+        airpodsRoll = nil
+        airpodsYaw = nil
     }
     
     // MARK: - Compute "percent down" and beep
@@ -279,7 +313,7 @@ class MotionViewModel: ObservableObject {
             return
         }
         
-        let current = airpodsPitch
+        let current = airpodsPitch ?? 0.0
         let fraction = (current - neutral) / range
         percentDown = fraction
         
@@ -310,3 +344,4 @@ class MotionViewModel: ObservableObject {
         audioPlayer?.play()
     }
 }
+
