@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2434D0B32D248DC5007C91AA /* beep.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2434D0B22D248DC5007C91AA /* beep.wav */; };
 		2434D0B52D2490BB007C91AA /* look_up.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2434D0B42D2490BB007C91AA /* look_up.wav */; };
+		2434D1152D24D077007C91AA /* watch_ski_coach Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 2434D0F22D24D075007C91AA /* watch_ski_coach Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,7 +27,42 @@
 			remoteGlobalIDString = 2434D0732D1E956D007C91AA;
 			remoteInfo = ski_coach;
 		};
+		2434D1022D24D077007C91AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2434D06C2D1E956D007C91AA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2434D0F12D24D075007C91AA;
+			remoteInfo = "watch_ski_coach Watch App";
+		};
+		2434D10C2D24D077007C91AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2434D06C2D1E956D007C91AA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2434D0F12D24D075007C91AA;
+			remoteInfo = "watch_ski_coach Watch App";
+		};
+		2434D1132D24D077007C91AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2434D06C2D1E956D007C91AA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2434D0F12D24D075007C91AA;
+			remoteInfo = "watch_ski_coach Watch App";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2434D1192D24D077007C91AA /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				2434D1152D24D077007C91AA /* watch_ski_coach Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2434D0742D1E956D007C91AA /* ski_coach.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ski_coach.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -34,6 +70,9 @@
 		2434D08E2D1E956F007C91AA /* ski_coachUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ski_coachUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2434D0B22D248DC5007C91AA /* beep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep.wav; sourceTree = "<group>"; };
 		2434D0B42D2490BB007C91AA /* look_up.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = look_up.wav; sourceTree = "<group>"; };
+		2434D0F22D24D075007C91AA /* watch_ski_coach Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "watch_ski_coach Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2434D1012D24D077007C91AA /* watch_ski_coach Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "watch_ski_coach Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2434D10B2D24D077007C91AA /* watch_ski_coach Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "watch_ski_coach Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -50,6 +89,21 @@
 		2434D0912D1E956F007C91AA /* ski_coachUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = ski_coachUITests;
+			sourceTree = "<group>";
+		};
+		2434D0F32D24D075007C91AA /* watch_ski_coach Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "watch_ski_coach Watch App";
+			sourceTree = "<group>";
+		};
+		2434D1042D24D077007C91AA /* watch_ski_coach Watch AppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "watch_ski_coach Watch AppTests";
+			sourceTree = "<group>";
+		};
+		2434D10E2D24D077007C91AA /* watch_ski_coach Watch AppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "watch_ski_coach Watch AppUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -76,6 +130,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2434D0EF2D24D075007C91AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2434D0FE2D24D077007C91AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2434D1082D24D077007C91AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -85,6 +160,9 @@
 				2434D0762D1E956D007C91AA /* ski_coach */,
 				2434D0872D1E956F007C91AA /* ski_coachTests */,
 				2434D0912D1E956F007C91AA /* ski_coachUITests */,
+				2434D0F32D24D075007C91AA /* watch_ski_coach Watch App */,
+				2434D1042D24D077007C91AA /* watch_ski_coach Watch AppTests */,
+				2434D10E2D24D077007C91AA /* watch_ski_coach Watch AppUITests */,
 				2434D0752D1E956D007C91AA /* Products */,
 				2434D0B22D248DC5007C91AA /* beep.wav */,
 				2434D0B42D2490BB007C91AA /* look_up.wav */,
@@ -97,6 +175,9 @@
 				2434D0742D1E956D007C91AA /* ski_coach.app */,
 				2434D0842D1E956F007C91AA /* ski_coachTests.xctest */,
 				2434D08E2D1E956F007C91AA /* ski_coachUITests.xctest */,
+				2434D0F22D24D075007C91AA /* watch_ski_coach Watch App.app */,
+				2434D1012D24D077007C91AA /* watch_ski_coach Watch AppTests.xctest */,
+				2434D10B2D24D077007C91AA /* watch_ski_coach Watch AppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -111,10 +192,12 @@
 				2434D0702D1E956D007C91AA /* Sources */,
 				2434D0712D1E956D007C91AA /* Frameworks */,
 				2434D0722D1E956D007C91AA /* Resources */,
+				2434D1192D24D077007C91AA /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				2434D1142D24D077007C91AA /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				2434D0762D1E956D007C91AA /* ski_coach */,
@@ -172,6 +255,74 @@
 			productReference = 2434D08E2D1E956F007C91AA /* ski_coachUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		2434D0F12D24D075007C91AA /* watch_ski_coach Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2434D1162D24D077007C91AA /* Build configuration list for PBXNativeTarget "watch_ski_coach Watch App" */;
+			buildPhases = (
+				2434D0EE2D24D075007C91AA /* Sources */,
+				2434D0EF2D24D075007C91AA /* Frameworks */,
+				2434D0F02D24D075007C91AA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				2434D0F32D24D075007C91AA /* watch_ski_coach Watch App */,
+			);
+			name = "watch_ski_coach Watch App";
+			packageProductDependencies = (
+			);
+			productName = "watch_ski_coach Watch App";
+			productReference = 2434D0F22D24D075007C91AA /* watch_ski_coach Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		2434D1002D24D077007C91AA /* watch_ski_coach Watch AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2434D11A2D24D077007C91AA /* Build configuration list for PBXNativeTarget "watch_ski_coach Watch AppTests" */;
+			buildPhases = (
+				2434D0FD2D24D077007C91AA /* Sources */,
+				2434D0FE2D24D077007C91AA /* Frameworks */,
+				2434D0FF2D24D077007C91AA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2434D1032D24D077007C91AA /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2434D1042D24D077007C91AA /* watch_ski_coach Watch AppTests */,
+			);
+			name = "watch_ski_coach Watch AppTests";
+			packageProductDependencies = (
+			);
+			productName = "watch_ski_coach Watch AppTests";
+			productReference = 2434D1012D24D077007C91AA /* watch_ski_coach Watch AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		2434D10A2D24D077007C91AA /* watch_ski_coach Watch AppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2434D11D2D24D077007C91AA /* Build configuration list for PBXNativeTarget "watch_ski_coach Watch AppUITests" */;
+			buildPhases = (
+				2434D1072D24D077007C91AA /* Sources */,
+				2434D1082D24D077007C91AA /* Frameworks */,
+				2434D1092D24D077007C91AA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2434D10D2D24D077007C91AA /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2434D10E2D24D077007C91AA /* watch_ski_coach Watch AppUITests */,
+			);
+			name = "watch_ski_coach Watch AppUITests";
+			packageProductDependencies = (
+			);
+			productName = "watch_ski_coach Watch AppUITests";
+			productReference = 2434D10B2D24D077007C91AA /* watch_ski_coach Watch AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -193,6 +344,17 @@
 						CreatedOnToolsVersion = 16.2;
 						TestTargetID = 2434D0732D1E956D007C91AA;
 					};
+					2434D0F12D24D075007C91AA = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					2434D1002D24D077007C91AA = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 2434D0F12D24D075007C91AA;
+					};
+					2434D10A2D24D077007C91AA = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 2434D0F12D24D075007C91AA;
+					};
 				};
 			};
 			buildConfigurationList = 2434D06F2D1E956D007C91AA /* Build configuration list for PBXProject "ski_coach" */;
@@ -212,6 +374,9 @@
 				2434D0732D1E956D007C91AA /* ski_coach */,
 				2434D0832D1E956F007C91AA /* ski_coachTests */,
 				2434D08D2D1E956F007C91AA /* ski_coachUITests */,
+				2434D0F12D24D075007C91AA /* watch_ski_coach Watch App */,
+				2434D1002D24D077007C91AA /* watch_ski_coach Watch AppTests */,
+				2434D10A2D24D077007C91AA /* watch_ski_coach Watch AppUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -234,6 +399,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		2434D08C2D1E956F007C91AA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2434D0F02D24D075007C91AA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2434D0FF2D24D077007C91AA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2434D1092D24D077007C91AA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -264,6 +450,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2434D0EE2D24D075007C91AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2434D0FD2D24D077007C91AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2434D1072D24D077007C91AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -276,6 +483,21 @@
 			isa = PBXTargetDependency;
 			target = 2434D0732D1E956D007C91AA /* ski_coach */;
 			targetProxy = 2434D08F2D1E956F007C91AA /* PBXContainerItemProxy */;
+		};
+		2434D1032D24D077007C91AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2434D0F12D24D075007C91AA /* watch_ski_coach Watch App */;
+			targetProxy = 2434D1022D24D077007C91AA /* PBXContainerItemProxy */;
+		};
+		2434D10D2D24D077007C91AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2434D0F12D24D075007C91AA /* watch_ski_coach Watch App */;
+			targetProxy = 2434D10C2D24D077007C91AA /* PBXContainerItemProxy */;
+		};
+		2434D1142D24D077007C91AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2434D0F12D24D075007C91AA /* watch_ski_coach Watch App */;
+			targetProxy = 2434D1132D24D077007C91AA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -535,6 +757,144 @@
 			};
 			name = Release;
 		};
+		2434D1172D24D077007C91AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"watch_ski_coach Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = K69J2B92Y2;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = watch_ski_coach;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "mitra.ski-coach";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "mitra.ski-coach.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.2;
+			};
+			name = Debug;
+		};
+		2434D1182D24D077007C91AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"watch_ski_coach Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = K69J2B92Y2;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = watch_ski_coach;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "mitra.ski-coach";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "mitra.ski-coach.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.2;
+			};
+			name = Release;
+		};
+		2434D11B2D24D077007C91AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = K69J2B92Y2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "mitra.watch-ski-coach-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/watch_ski_coach Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/watch_ski_coach Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 11.2;
+			};
+			name = Debug;
+		};
+		2434D11C2D24D077007C91AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = K69J2B92Y2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "mitra.watch-ski-coach-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/watch_ski_coach Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/watch_ski_coach Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 11.2;
+			};
+			name = Release;
+		};
+		2434D11E2D24D077007C91AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = K69J2B92Y2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "mitra.watch-ski-coach-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "watch_ski_coach Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 11.2;
+			};
+			name = Debug;
+		};
+		2434D11F2D24D077007C91AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = K69J2B92Y2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "mitra.watch-ski-coach-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "watch_ski_coach Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 11.2;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -570,6 +930,33 @@
 			buildConfigurations = (
 				2434D09F2D1E956F007C91AA /* Debug */,
 				2434D0A02D1E956F007C91AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2434D1162D24D077007C91AA /* Build configuration list for PBXNativeTarget "watch_ski_coach Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2434D1172D24D077007C91AA /* Debug */,
+				2434D1182D24D077007C91AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2434D11A2D24D077007C91AA /* Build configuration list for PBXNativeTarget "watch_ski_coach Watch AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2434D11B2D24D077007C91AA /* Debug */,
+				2434D11C2D24D077007C91AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2434D11D2D24D077007C91AA /* Build configuration list for PBXNativeTarget "watch_ski_coach Watch AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2434D11E2D24D077007C91AA /* Debug */,
+				2434D11F2D24D077007C91AA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

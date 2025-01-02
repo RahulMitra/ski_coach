@@ -1,17 +1,36 @@
-//
-//  ski_coachApp.swift
-//  ski_coach
-//
-//  Created by Rahul Mitra on 12/26/24.
-//
-
 import SwiftUI
+import AVFoundation
 
 @main
-struct ski_coachApp: App {
+struct MyApp: App {
+    @StateObject private var motionVM = MotionViewModel()
+    @StateObject private var watchConnectivityManager = WatchConnectivityManager()
+    
+    init() {
+        configureAudioSession()
+    }
+    
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(motionVM)
+                .onAppear {
+                    // Link the manager to the MotionViewModel
+                    watchConnectivityManager.motionViewModel = motionVM
+                }
         }
     }
+    
+    private func configureAudioSession() {
+        do {
+            let session = AVAudioSession.sharedInstance()
+            // Category .playback for background audio
+            try session.setCategory(.playback, mode: .default, options: [])
+            try session.setActive(true)
+        } catch {
+            print("Error setting up audio session:", error)
+        }
+    }
+
 }
