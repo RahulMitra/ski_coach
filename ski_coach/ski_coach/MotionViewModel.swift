@@ -37,14 +37,15 @@ class MotionViewModel: ObservableObject {
     }
     
     // MARK: - Calibration
-    private enum CalibrationStage {
+    enum CalibrationStage {
         case notStarted
         case captureNeutral
         case captureDown
         case done
     }
-    private var stage: CalibrationStage = .notStarted
     
+    @Published var stage: CalibrationStage = .notStarted
+
     private var neutralPitch: Double?
     private var headDownPitch: Double?
     

@@ -64,10 +64,7 @@ struct WatchContentView: View {
             Text(sessionManager.calibrationStageText)
                 .font(.headline)
             
-            if sessionManager.isCalibrated {
-                Text("Percent Down: \(sessionManager.percentDown * 100, specifier: "%.1f")%")
-                    .foregroundColor(sessionManager.percentDown >= 0.1 ? .red : .primary)
-                
+            if sessionManager.isCalibrated {                
                 Text("Slide to Re-Calibrate")
                     .font(.footnote)
                     .foregroundColor(.gray)

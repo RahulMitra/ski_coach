@@ -29,39 +29,29 @@ class WatchConnectivityManager: NSObject, ObservableObject {
         }
     }
     
-    // Subscribe to MotionViewModel so that whenever it changes,
-    // we can send the new calibration state to the watch.
     private func subscribeToViewModel() {
         guard let motionViewModel = motionViewModel else { return }
         
-        // Example: whenever percentDown changes, push an update
-        motionViewModel.$percentDown
+        // Subscribe to calibrationStageText changes
+        motionViewModel.$stage
             .sink { [weak self] _ in
-                self?.sendMotionUpdateToWatch()
-            }
-            .store(in: &cancellables)
-        
-        // Also whenever the calibration stage might change, we push an update
-        // In practice, you might watch for specific properties or just send periodically
-        // for demonstration, let's do phonePitch as a trigger too
-        motionViewModel.$phonePitch
-            .sink { [weak self] _ in
-                self?.sendMotionUpdateToWatch()
+                self?.sendCalibrationUpdateToWatch()
             }
             .store(in: &cancellables)
     }
-    
-    private func sendMotionUpdateToWatch() {
+
+    private func sendCalibrationUpdateToWatch() {
         guard session.isReachable,
               let motionViewModel = motionViewModel else { return }
         
         let message: [String: Any] = [
-            "calibrationStage": motionViewModel.calibrationStageText,
-            "percentDown": motionViewModel.percentDown
+            "calibrationStage": motionViewModel.calibrationStageText
         ]
         
         session.sendMessage(message, replyHandler: nil, errorHandler: nil)
     }
+
+    
 }
 
 // MARK: - WCSessionDelegate
@@ -94,7 +84,7 @@ extension WatchConnectivityManager: WCSessionDelegate {
             }
             
             // After changing the calibration, send back an updated status
-            self.sendMotionUpdateToWatch()
+            self.sendCalibrationUpdateToWatch()
         }
     }
 }

@@ -12,7 +12,6 @@ import Combine
 class WatchSessionManager: NSObject, ObservableObject, WCSessionDelegate {
     // State to display in the watch UI
     @Published var calibrationStageText: String = "Unknown"
-    @Published var percentDown: Double = 0.0
     
     // Derived from calibrationStageText
     var isCalibrated: Bool {
@@ -54,9 +53,6 @@ class WatchSessionManager: NSObject, ObservableObject, WCSessionDelegate {
         DispatchQueue.main.async {
             if let stage = message["calibrationStage"] as? String {
                 self.calibrationStageText = stage
-            }
-            if let percent = message["percentDown"] as? Double {
-                self.percentDown = percent
             }
         }
     }
