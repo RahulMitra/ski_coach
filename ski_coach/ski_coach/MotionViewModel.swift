@@ -5,7 +5,6 @@
 //  Created by Rahul Mitra on 1/1/25.
 //
 
- 
 import SwiftUI
 import CoreMotion
 import AVFoundation
@@ -74,11 +73,11 @@ class MotionViewModel: ObservableObject {
     @Published var percentDown: Double = 0.0
     
     // MARK: - Timer for continuous beeping
-    private var beepTimer: Timer?
+    private var beepTimer: DispatchSourceTimer?
     private let beepInterval = 0.75
     
     // MARK: - Timer to poll headphone connection
-    private var connectionStatusTimer: Timer?
+    private var connectionStatusTimer: DispatchSourceTimer?
     
     // MARK: - Init
     init() {
@@ -99,31 +98,31 @@ class MotionViewModel: ObservableObject {
         startAirPodsMotionUpdates()
 
         // Poll connection status every 1 second
-        connectionStatusTimer?.invalidate()
-        connectionStatusTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            DispatchQueue.global(qos: .background).async {
-                guard let self = self else { return }
-                let isConnected = self.headphoneMotionManager.isDeviceMotionAvailable
-                    && self.headphoneMotionManager.isDeviceMotionActive
+        connectionStatusTimer?.cancel()
+        connectionStatusTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global(qos: .background))
+        connectionStatusTimer?.schedule(deadline: .now(), repeating: 1.0)
+        connectionStatusTimer?.setEventHandler { [weak self] in
+            guard let self = self else { return }
+            let isConnected = self.headphoneMotionManager.isDeviceMotionAvailable
+                && self.headphoneMotionManager.isDeviceMotionActive
 
-                DispatchQueue.main.async {
-                    if self.isAirpodsMotionActive != isConnected {
-                        self.isAirpodsMotionActive = isConnected
-                        if !isConnected {
-                            self.clearAirpodsData()
-                        }
+            DispatchQueue.main.async {
+                if self.isAirpodsMotionActive != isConnected {
+                    self.isAirpodsMotionActive = isConnected
+                    if !isConnected {
+                        self.clearAirpodsData()
                     }
                 }
             }
         }
-
+        connectionStatusTimer?.resume()
     }
 
     func stopUpdates() {
         phoneMotionManager.stopDeviceMotionUpdates()
         headphoneMotionManager.stopDeviceMotionUpdates()
         stopBeeping()
-        connectionStatusTimer?.invalidate()
+        connectionStatusTimer?.cancel()
         connectionStatusTimer = nil
     }
     
@@ -246,13 +245,16 @@ class MotionViewModel: ObservableObject {
     private func startBeeping() {
         guard beepTimer == nil else { return }
         
-        beepTimer = Timer.scheduledTimer(withTimeInterval: beepInterval, repeats: true) { [weak self] _ in
+        beepTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global(qos: .background))
+        beepTimer?.schedule(deadline: .now(), repeating: beepInterval)
+        beepTimer?.setEventHandler { [weak self] in
             self?.playBeep()
         }
+        beepTimer?.resume()
     }
     
     private func stopBeeping() {
-        beepTimer?.invalidate()
+        beepTimer?.cancel()
         beepTimer = nil
     }
     
@@ -263,5 +265,4 @@ class MotionViewModel: ObservableObject {
             self.audioPlayer?.play()
         }
     }
-
 }
