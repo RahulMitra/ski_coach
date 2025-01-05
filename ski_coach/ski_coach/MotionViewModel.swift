@@ -5,7 +5,7 @@
 //  Created by Rahul Mitra on 1/1/25.
 //
 
-
+ 
 import SwiftUI
 import CoreMotion
 import AVFoundation
@@ -101,20 +101,22 @@ class MotionViewModel: ObservableObject {
         // Poll connection status every 1 second
         connectionStatusTimer?.invalidate()
         connectionStatusTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            guard let self = self else { return }
+            DispatchQueue.global(qos: .background).async {
+                guard let self = self else { return }
+                let isConnected = self.headphoneMotionManager.isDeviceMotionAvailable
+                    && self.headphoneMotionManager.isDeviceMotionActive
 
-            let isConnected = self.headphoneMotionManager.isDeviceMotionAvailable
-                && self.headphoneMotionManager.isDeviceMotionActive
-
-            DispatchQueue.main.async {
-                if self.isAirpodsMotionActive != isConnected {
-                    self.isAirpodsMotionActive = isConnected
-                    if !isConnected {
-                        self.clearAirpodsData()
+                DispatchQueue.main.async {
+                    if self.isAirpodsMotionActive != isConnected {
+                        self.isAirpodsMotionActive = isConnected
+                        if !isConnected {
+                            self.clearAirpodsData()
+                        }
                     }
                 }
             }
         }
+
     }
 
     func stopUpdates() {
@@ -149,28 +151,29 @@ class MotionViewModel: ObservableObject {
         stopBeeping()
     }
     
-    // MARK: - Start iPhone Motion
     private func startPhoneMotionUpdates() {
         guard phoneMotionManager.isDeviceMotionAvailable else {
             print("iPhone motion data not available.")
             return
         }
         
+        let motionQueue = OperationQueue()
         phoneMotionManager.deviceMotionUpdateInterval = 1.0 / 50.0
-        phoneMotionManager.startDeviceMotionUpdates(to: .main) { [weak self] motion, error in
+        phoneMotionManager.startDeviceMotionUpdates(to: motionQueue) { [weak self] motion, error in
             guard let self = self, let motion = motion, error == nil else { return }
             
             let pitchDegrees = motion.attitude.pitch * (180.0 / .pi)
             let rollDegrees  = motion.attitude.roll  * (180.0 / .pi)
             let yawDegrees   = motion.attitude.yaw   * (180.0 / .pi)
             
-            self.phonePitch = pitchDegrees
-            self.phoneRoll  = rollDegrees
-            self.phoneYaw   = yawDegrees
+            DispatchQueue.main.async {
+                self.phonePitch = pitchDegrees
+                self.phoneRoll  = rollDegrees
+                self.phoneYaw   = yawDegrees
+            }
         }
     }
-    
-    // MARK: - Start AirPods Motion
+
     private func startAirPodsMotionUpdates() {
         guard headphoneMotionManager.isDeviceMotionAvailable else {
             DispatchQueue.main.async {
@@ -180,7 +183,8 @@ class MotionViewModel: ObservableObject {
             return
         }
         
-        headphoneMotionManager.startDeviceMotionUpdates(to: .main) { [weak self] motion, error in
+        let motionQueue = OperationQueue()
+        headphoneMotionManager.startDeviceMotionUpdates(to: motionQueue) { [weak self] motion, error in
             guard let self = self else { return }
             
             if let error = error {
@@ -204,12 +208,11 @@ class MotionViewModel: ObservableObject {
                 self.airpodsRoll = motion.attitude.roll * (180.0 / .pi)
                 self.airpodsYaw = motion.attitude.yaw * (180.0 / .pi)
                 
-                // Now that we have updated airpodsPitch, recalc how "down" we are
                 self.updatePercentDownAndCheckBeep()
             }
         }
     }
-    
+
     // MARK: - Clear AirPods Data
     private func clearAirpodsData() {
         airpodsPitch = nil
@@ -254,8 +257,11 @@ class MotionViewModel: ObservableObject {
     }
     
     private func playBeep() {
-        audioPlayer?.stop()
-        audioPlayer?.currentTime = 0
-        audioPlayer?.play()
+        DispatchQueue.global(qos: .background).async {
+            self.audioPlayer?.stop()
+            self.audioPlayer?.currentTime = 0
+            self.audioPlayer?.play()
+        }
     }
+
 }
