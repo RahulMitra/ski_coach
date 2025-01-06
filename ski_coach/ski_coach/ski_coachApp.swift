@@ -8,6 +8,7 @@ struct MyApp: App {
     
     init() {
         configureAudioSession()
+        SilentAudioManager.shared.startSilentAudio()
     }
     
 

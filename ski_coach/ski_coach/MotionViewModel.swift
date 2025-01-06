@@ -9,6 +9,33 @@ import SwiftUI
 import CoreMotion
 import AVFoundation
 
+// Ensures that silent audio loops to stop app from getting suspended
+final class SilentAudioManager {
+    static let shared = SilentAudioManager()
+    private var audioPlayer: AVAudioPlayer?
+
+    func startSilentAudio() {
+        guard let url = Bundle.main.url(forResource: "1-second-of-silence", withExtension: "mp3") else {
+            return
+        }
+        do {
+            let audioPlayer = try AVAudioPlayer(contentsOf: url)
+            audioPlayer.numberOfLoops = -1 // Loop forever
+            audioPlayer.volume = 0.01     // Very quiet
+            audioPlayer.play()
+            self.audioPlayer = audioPlayer
+        } catch {
+            print("Error loading/playing silent audio: \(error)")
+        }
+    }
+
+    func stopSilentAudio() {
+        audioPlayer?.stop()
+        audioPlayer = nil
+    }
+}
+
+
 class MotionViewModel: ObservableObject {
     // MARK: - Motion Managers
     private let phoneMotionManager = CMMotionManager()

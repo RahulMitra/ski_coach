@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2434D0B32D248DC5007C91AA /* beep.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2434D0B22D248DC5007C91AA /* beep.wav */; };
 		2434D0B52D2490BB007C91AA /* look_up.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2434D0B42D2490BB007C91AA /* look_up.wav */; };
 		2434D1152D24D077007C91AA /* watch_ski_coach Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 2434D0F22D24D075007C91AA /* watch_ski_coach Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		24542D332D2BA64000ACDC19 /* 1-second-of-silence.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 24542D322D2BA64000ACDC19 /* 1-second-of-silence.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,11 +68,11 @@
 		2434D0742D1E956D007C91AA /* ski_coach.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ski_coach.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2434D0842D1E956F007C91AA /* ski_coachTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ski_coachTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2434D08E2D1E956F007C91AA /* ski_coachUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ski_coachUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2434D0B22D248DC5007C91AA /* beep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep.wav; sourceTree = "<group>"; };
 		2434D0B42D2490BB007C91AA /* look_up.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = look_up.wav; sourceTree = "<group>"; };
 		2434D0F22D24D075007C91AA /* watch_ski_coach Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "watch_ski_coach Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2434D1012D24D077007C91AA /* watch_ski_coach Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "watch_ski_coach Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2434D10B2D24D077007C91AA /* watch_ski_coach Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "watch_ski_coach Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		24542D322D2BA64000ACDC19 /* 1-second-of-silence.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "1-second-of-silence.mp3"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -164,8 +164,8 @@
 				2434D1042D24D077007C91AA /* watch_ski_coach Watch AppTests */,
 				2434D10E2D24D077007C91AA /* watch_ski_coach Watch AppUITests */,
 				2434D0752D1E956D007C91AA /* Products */,
-				2434D0B22D248DC5007C91AA /* beep.wav */,
 				2434D0B42D2490BB007C91AA /* look_up.wav */,
+				24542D322D2BA64000ACDC19 /* 1-second-of-silence.mp3 */,
 			);
 			sourceTree = "<group>";
 		};
@@ -387,7 +387,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2434D0B52D2490BB007C91AA /* look_up.wav in Resources */,
-				2434D0B32D248DC5007C91AA /* beep.wav in Resources */,
+				24542D332D2BA64000ACDC19 /* 1-second-of-silence.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
