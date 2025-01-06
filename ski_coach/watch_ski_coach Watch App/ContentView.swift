@@ -56,36 +56,48 @@ struct SlideToConfirmView: View {
 struct WatchContentView: View {
     @EnvironmentObject var sessionManager: WatchSessionManager
     
-    // Tracks how far the user has slid. Resets after hitting threshold.
-    @State private var recalibrateSliderValue: Double = 0.0
-    
     var body: some View {
         VStack(spacing: 10) {
             Text(sessionManager.calibrationStageText)
                 .font(.headline)
             
-            if sessionManager.isCalibrated {                
+            if sessionManager.isCalibrated {
+                // Create a custom Binding<Bool> for the Toggle
+                // This ensures we only send "setMute" when the user physically toggles it on the watch.
+                let muteBinding = Binding<Bool>(
+                    get: { sessionManager.isMuted },
+                    set: { newValue in
+                        // If the user changed the value (on the Watch), update local state...
+                        sessionManager.isMuted = newValue
+                        
+                        // ...and send a message to the phone about this new final value
+                        sessionManager.sendMessageToPhone(action: "setMute",
+                                                          extra: ["isMutedValue": newValue])
+                    }
+                )
+
+                Toggle(isOn: muteBinding) {
+                    Text("Mute")
+                }
+                
+                // Slide to Recalibrate, etc.
                 Text("Slide to Re-Calibrate")
                     .font(.footnote)
                     .foregroundColor(.gray)
                 
-                // Our new SlideToConfirmView
                 SlideToConfirmView {
-                    // This closure executes after the user slides past threshold
                     sessionManager.sendMessageToPhone(action: "recalibrate")
                 }
-                .frame(height: 30) // Adjust height to taste
+                .frame(height: 30)
                 .padding(.horizontal, 10)
-                
-                
+
             } else {
-                // If not calibrated yet, keep the "Next Step" button
+                // Calibration button if not calibrated
                 Text("Slide to Calibrate")
                     .font(.footnote)
                     .foregroundColor(.gray)
                 
                 SlideToConfirmView {
-                    // This closure executes when the slider passes the threshold
                     sessionManager.sendMessageToPhone(action: "calibrateStep")
                 }
                 .frame(height: 30)
@@ -94,3 +106,4 @@ struct WatchContentView: View {
         }
     }
 }
+

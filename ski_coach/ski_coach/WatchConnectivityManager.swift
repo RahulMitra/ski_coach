@@ -10,14 +10,12 @@ import WatchConnectivity
 import Combine
 
 class WatchConnectivityManager: NSObject, ObservableObject {
-    // Link to your motion view model
     var motionViewModel: MotionViewModel? {
-        didSet { 
-            // Subscribe to changes (so we can send updates to the watch)
+        didSet {
             subscribeToViewModel()
         }
     }
-    
+
     private let session = WCSession.default
     private var cancellables = Set<AnyCancellable>()
 
@@ -32,26 +30,34 @@ class WatchConnectivityManager: NSObject, ObservableObject {
     private func subscribeToViewModel() {
         guard let motionViewModel = motionViewModel else { return }
         
-        // Subscribe to calibrationStageText changes
+        // Whenever calibration stage changes, send that update
         motionViewModel.$stage
             .sink { [weak self] _ in
-                self?.sendCalibrationUpdateToWatch()
+                self?.sendStateToWatch()
+            }
+            .store(in: &cancellables)
+
+        // 1) Also watch for changes in the isMuted property
+        motionViewModel.$isMuted
+            .sink { [weak self] _ in
+                self?.sendStateToWatch()
             }
             .store(in: &cancellables)
     }
 
-    private func sendCalibrationUpdateToWatch() {
+    // 2) Send the current calibration stage & mute status
+    private func sendStateToWatch() {
         guard session.isReachable,
-              let motionViewModel = motionViewModel else { return }
+              let motionViewModel = motionViewModel
+        else { return }
         
         let message: [String: Any] = [
-            "calibrationStage": motionViewModel.calibrationStageText
+            "calibrationStage": motionViewModel.calibrationStageText,
+            "isMuted": motionViewModel.isMuted
         ]
         
         session.sendMessage(message, replyHandler: nil, errorHandler: nil)
     }
-
-    
 }
 
 // MARK: - WCSessionDelegate
@@ -63,28 +69,35 @@ extension WatchConnectivityManager: WCSessionDelegate {
     ) {
         // Handle activation if needed
     }
-    
-    // iOS only
+
     func sessionDidBecomeInactive(_ session: WCSession) { }
     func sessionDidDeactivate(_ session: WCSession) { }
-    
-    // Listen for watch messages
+
+    // iPhone receiving messages from Watch
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
         DispatchQueue.main.async {
             guard let motionVM = self.motionViewModel,
-                  let action = message["action"] as? String else { return }
-            
+                  let action = message["action"] as? String
+            else { return }
+
             switch action {
             case "calibrateStep":
                 motionVM.handleCalibrationButtonPress()
             case "recalibrate":
                 motionVM.recalibrate()
+            case "setMute":
+                // 1) Extract the new boolean value from the message
+                if let newValue = message["isMutedValue"] as? Bool {
+                    // 2) Just SET it (don't toggle)
+                    motionVM.isMuted = newValue
+                }
             default:
                 break
             }
             
-            // After changing the calibration, send back an updated status
-            self.sendCalibrationUpdateToWatch()
+            // Always send updated state back after an action
+            self.sendStateToWatch()
         }
     }
+
 }

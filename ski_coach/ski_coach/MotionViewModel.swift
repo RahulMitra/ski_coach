@@ -44,6 +44,8 @@ class MotionViewModel: ObservableObject {
     // MARK: - Audio for beep
     private var audioPlayer: AVAudioPlayer?
     
+    @Published var isMuted: Bool = false
+
     // MARK: - Published: Current iPhone Orientation
     @Published var phonePitch: Double = 0.0
     @Published var phoneRoll:  Double = 0.0
@@ -262,7 +264,7 @@ class MotionViewModel: ObservableObject {
         let fraction = (current - neutral) / range
         percentDown = fraction
         
-        if fraction >= 0.1 {
+        if fraction >= 0.1 && !isMuted {
             startBeeping()
         } else {
             stopBeeping()

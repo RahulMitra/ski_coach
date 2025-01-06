@@ -10,16 +10,15 @@ import WatchConnectivity
 import Combine
 
 class WatchSessionManager: NSObject, ObservableObject, WCSessionDelegate {
-    // State to display in the watch UI
     @Published var calibrationStageText: String = "Unknown"
+    @Published var isMuted: Bool = false  // <-- Add this
     
-    // Derived from calibrationStageText
     var isCalibrated: Bool {
         calibrationStageText == "Calibrated"
     }
-    
+
     private let session = WCSession.default
-    
+
     override init() {
         super.init()
         if WCSession.isSupported() {
@@ -27,32 +26,38 @@ class WatchSessionManager: NSObject, ObservableObject, WCSessionDelegate {
             session.activate()
         }
     }
-    
-    // Send an action to iPhone (e.g., "calibrateStep" or "recalibrate")
-    func sendMessageToPhone(action: String) {
+
+    func sendMessageToPhone(action: String, extra: [String: Any] = [:]) {
         guard session.isReachable else { return }
-        session.sendMessage(["action": action], replyHandler: nil, errorHandler: nil)
+        
+        var message: [String: Any] = ["action": action]
+        extra.forEach { key, value in
+            message[key] = value
+        }
+        
+        session.sendMessage(message, replyHandler: nil, errorHandler: nil)
     }
-    
-    // MARK: - WCSessionDelegate
-    func session(
-        _ session: WCSession,
-        activationDidCompleteWith activationState: WCSessionActivationState,
-        error: Error?
-    ) {
-        // Handle errors or do additional setup
+
+
+    // MARK: WCSessionDelegate
+    func session(_ session: WCSession,
+                 activationDidCompleteWith activationState: WCSessionActivationState,
+                 error: Error?) {
+        // ...
     }
-    
-    // watchOS only
+
     func sessionReachabilityDidChange(_ session: WCSession) {
-        // Could update UI if phone becomes unreachable, etc.
+        // ...
     }
-    
-    // Called when iPhone sends us updated calibration data
+
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
         DispatchQueue.main.async {
             if let stage = message["calibrationStage"] as? String {
                 self.calibrationStageText = stage
+            }
+            // 1) Also update local isMuted from phone
+            if let newIsMuted = message["isMuted"] as? Bool {
+                self.isMuted = newIsMuted
             }
         }
     }
