@@ -1,6 +1,8 @@
 # Ski Coach
 
-An iOS + watchOS companion app that monitors device (iPhone) and AirPods orientation in real-time, calculates how far "down" your head is, and provides audio beeps to remind you to look up if your head dips below a certain threshold. The watch app displays the calibration status and allows you to toggle muting, calibrate, or re-calibrate with a simple "slide to confirm" gesture.
+An iOS + watchOS companion app that monitors device (iPhone) and AirPods orientation in real-time, calculates how far "down" your head is, and provides audio saying **“look up”** if your head dips below a certain threshold. The watch app displays the calibration status and allows you to toggle muting, calibrate, or re-calibrate with a simple "slide to confirm" gesture.
+
+Additionally, **the phone’s orientation is used to account for slope angle**. By storing the phone on your upper body (e.g., a chest pocket), the app can determine a reference angle between the chest and head, allowing it to function reliably across different slope inclines.
 
 ---
 
@@ -8,7 +10,8 @@ An iOS + watchOS companion app that monitors device (iPhone) and AirPods orienta
 
 1. **Real-Time Head Tracking**  
    - Uses `CMMotionManager` to track the iPhone’s orientation (pitch, roll, yaw).  
-   - Uses `CMHeadphoneMotionManager` (when available on compatible AirPods) to track the user’s head orientation.
+   - Uses `CMHeadphoneMotionManager` (when available on compatible AirPods) to track the user’s head orientation.  
+   - **Phone orientation aids slope reference**: The phone, placed on your upper body, helps derive a consistent baseline angle even on varying slopes.
 
 2. **Calibration**  
    - Quick, two-step calibration:
@@ -17,8 +20,8 @@ An iOS + watchOS companion app that monitors device (iPhone) and AirPods orienta
    - Once calibrated, the app calculates a percentage of how “down” your head is based on these two reference points.
 
 3. **Audio Alerts**  
-   - Plays a short beep (from `look_up.wav`) whenever your head is too far down.  
-   - You can toggle muting if you don’t want to hear the beep.
+   - Plays **audio saying “look up”** (from `look_up.wav`) whenever your head is too far down.  
+   - You can toggle muting if you don’t want to hear the audio message.
 
 4. **Prevents App Suspension**  
    - The app plays a very quiet, looping one-second silent MP3 in the background to keep the audio session active, reducing the likelihood of iOS suspending the app while it’s in the background (e.g., while skiing).
@@ -26,7 +29,7 @@ An iOS + watchOS companion app that monitors device (iPhone) and AirPods orienta
 5. **watchOS Companion**  
    - Displays calibration state (“Not Started”, “Neutral Head”, “Head Down”, “Calibrated”).  
    - Allows you to slide to calibrate or re-calibrate.  
-   - A toggle lets you mute/unmute audio beeping from your wrist.
+   - A toggle lets you mute/unmute the audio from your wrist.
 
 ---
 
@@ -36,7 +39,7 @@ Below are the primary Swift files and their roles:
 
 - **`MotionViewModel.swift`**  
   - Orchestrates iPhone and AirPods motion data collection.  
-  - Manages calibration states, threshold detection, and beep logic.  
+  - Manages calibration states, threshold detection, and audio logic.  
   - Maintains a reference to a `SilentAudioManager` that keeps the app’s audio session alive in the background.
 
 - **`WatchConnectivityManager.swift`**  
@@ -61,5 +64,4 @@ Below are the primary Swift files and their roles:
 
 - **`ContentView.swift` (watchOS)**  
   - Shows calibration stage and includes UI for “slide to calibrate” or “slide to re-calibrate,” plus a toggle for mute.
-
 
